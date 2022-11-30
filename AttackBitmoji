@@ -1,4 +1,4 @@
-var drawHead;
+vvar drawHead;
 var drawBody;
 var drawBitmoji;
 var drawEye;
@@ -71,23 +71,49 @@ drawBitmoji= function(x, y, bitmojiSize, bodySize){
 };   
 
 
+var lives = 3;
+
+var attackBitmoji = function(x, y){
+    this.x = x;
+    this.y = y;
+};
+
+attackBitmoji.prototype.draw = function() {
+     drawBitmoji(this.x, this.y, 50);
+};
+
+attackBitmoji.prototype.passLine = function(){
+    if(this.y >= 340){
+        fill(255, 0, 0);
+        rect(100, 100, 100, 100);
+    }
+};
+
 var xPos = [];
 var yPos = [];
-for(var i= 0; i<8; i++) {
+for(var i= 0; i< 8; i++) {
     xPos.push(i * 51);
-    yPos.push(i);
+    yPos.push(-10);
+}
+
+var bitmojiArray = [];
+for(var i = 0; i < 8; i ++){
+    bitmojiArray.push(new attackBitmoji(xPos[i], yPos[i], 50));
 }
 
 draw = function() {
     
     background(255, 255, 255);
+    fill(255, 0, 0);
+    rect(0, 340, 400, 2, 0);
     
     noStroke();
     fill(0, 200, 255);
  
-
-    for (var i = 0; i < xPos.length; i++) {
-        drawBitmoji(xPos[i], yPos[i], 50);
-        yPos[i] += 1;
+    for (var i = 0; i < bitmojiArray.length; i++) {
+        bitmojiArray[i].draw();
+        bitmojiArray[i].passLine();
+        bitmojiArray[i].y +=1;
     }
-};
+    
+    };
